@@ -5,7 +5,7 @@ require 'git'
 require 'find'
 
 fullstop_path = '~/.fullstop'
-fullstop_repository = 'https://github.com/alappe/CoffeeCouch.git'
+fullstop_repository = 'https://github.com/alappe/fullstop.git'
 
 fullstop_path = File.expand_path fullstop_path
 
