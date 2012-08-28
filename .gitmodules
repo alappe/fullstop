@@ -1,0 +1,9 @@
+[submodule "modules/zsh"]
+	path = modules/zsh
+	url = https://github.com/alappe/dotfiles-zsh.git
+[submodule "modules/vim"]
+	path = modules/vim
+	url = https://github.com/alappe/dotfiles-vim.git
+[submodule "modules/tmux"]
+	path = modules/tmux
+	url = https://github.com/alappe/dotfiles-tmux.git
