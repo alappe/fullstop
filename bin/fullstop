@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'git'
+require 'find'
+
+fullstop_path = '~/.fullstop'
+fullstop_repository = 'https://github.com/alappe/CoffeeCouch.git'
+
+fullstop_path = File.expand_path fullstop_path
+
+def find_config_files_in(fullstop_path)
+  files = []
+  Find.find fullstop_path do |path|
+    if File.basename(path) == '.fullstoprc'
+      files.push path
+    end
+  end
+  files
+end
+
+def link_files_for(config_file)
+  file = File.open config_file
+  directory = File.dirname config_file
+  file.each do |line|
+    line = line.gsub(/\n/, '')
+    parts = /([\.\w]+) -> ([\.\w]+)/
+    from = File.join directory, line.gsub(parts, '\1')
+    to = File.join File.expand_path('~'), line.gsub(parts, '\2')
+    unless File.symlink? to
+      puts "Linking #{from} →  #{to}"
+      File.symlink from, to
+    end
+  end
+end
+
+if File.directory? fullstop_path
+  files = find_config_files_in fullstop_path
+  files.each do |file|
+    link_files_for file
+  end
+else
+  puts "Cloning fullstop repository into #{fullstop_path}"
+  Git.clone fullstop_repository, fullstop_path, :recursive => true
+  Dir.chdir fullstop_path do
+    puts "Updating all submodules…"
+    system 'git submodule update --init'
+    system 'git submodule foreach "git submodule update --init"'
+  end
+end
