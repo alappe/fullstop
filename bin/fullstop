@@ -34,11 +34,15 @@ def link_files_for(config_file)
   end
 end
 
-if File.directory? fullstop_path
+def update_links(fullstop_path)
   files = find_config_files_in fullstop_path
   files.each do |file|
     link_files_for file
   end
+end
+
+if File.directory? fullstop_path
+  update_links fullstop_path
 else
   puts "Cloning fullstop repository into #{fullstop_path}"
   Git.clone fullstop_repository, fullstop_path, :recursive => true
@@ -46,5 +50,6 @@ else
     puts "Updating all submodules…"
     system 'git submodule update --init'
     system 'git submodule foreach "git submodule update --init"'
+    update_links fullstop_path
   end
 end
