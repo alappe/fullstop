@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'git'
 require 'find'
 
 fullstop_path = '~/.fullstop'
@@ -45,7 +44,7 @@ if File.directory? fullstop_path
   update_links fullstop_path
 else
   puts "Cloning fullstop repository into #{fullstop_path}"
-  Git.clone fullstop_repository, fullstop_path, :recursive => true
+  system "git clone --recursive #{fullstop_repository} #{fullstop_path}"
   Dir.chdir fullstop_path do
     puts "Updating all submodules…"
     system 'git submodule update --init'
