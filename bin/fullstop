@@ -23,7 +23,7 @@ def link_files_for(config_file)
   directory = File.dirname config_file
   file.each do |line|
     line = line.gsub(/\n/, '')
-    parts = /([\.\w]+) -> ([\.\w]+)/
+    parts = /([\.\/\w]+) -> ([\.\/\w]+)/
     from = File.join directory, line.gsub(parts, '\1')
     to = File.join File.expand_path('~'), line.gsub(parts, '\2')
     unless File.symlink? to
